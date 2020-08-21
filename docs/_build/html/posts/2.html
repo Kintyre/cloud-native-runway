@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>#2: Setting up &amp; Configuring the Cloud Environment &#8212; The Cloud-Native Runway  documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Setup Steps" href="3.html" />
+    <link rel="prev" title="#1: Introduction &amp; Background" href="1.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="setting-up-configuring-the-cloud-environment">
+<h1>#2:  Setting up &amp; Configuring the Cloud Environment<a class="headerlink" href="#setting-up-configuring-the-cloud-environment" title="Permalink to this headline">¶</a></h1>
+<p>In the first blog post in this series I discussed some of the reasons,  thought processes and design considerations that guided the building of our reference application being discussed in this blog series.  In this post I will be getting into the details of the hosting environment.  Remembering back to the first blog I talked a lot about the design decision for making what we build as cloud provider agnostic as possible.  I also mentioned that most of what we do at the moment is based in the AWS ecosystem so this post will be in that context.</p>
+<div class="section" id="first-a-mind-switch">
+<h2>First, a mind switch<a class="headerlink" href="#first-a-mind-switch" title="Permalink to this headline">¶</a></h2>
+<p>When you start talking about cloud native applications you really start getting into a hybrid skillset.  I say that because if you are from a traditional application development skill set you are used to application architecture.  Things like how to design, databases,  how to define the classes and entities in the application,  how to decouple the application through dependency injection etc…  You are probably not used to dealing with network routes because that’s what the “infrastructure” guys do.  On the other hand if you are coming at this from more of a Infrastructure perspective you are used to designing networks,  configuring load balancers,  performing penetration testing,  setting up &amp; configuring servers and such but don’t really get the whole dependency injection thing the app guys talk about.   A move to cloud computing goes a long way to blurring the lines between these two worlds into a single skill set.  Sure you can spin up an EC2 instance in AWS and move the existing workload off of the server in the datacenter onto the cloud instance and it will feel very much the same as the on-prem world but that’s not really what we are talking about here.</p>
+<p>When you consider that this can be a big subject requiring a fair amount of architectural skill combined with the actual needs of our reference app being kind of small it would be a short blog post with minimal value if I just described what the app needs.  In order to give cloud setup and configuration its due within the context of a relatively simple use case I decided to break this down into a series of steps with general thought provoking questions one might need to consider as you work through the setup and configuration of a cloud environment. At the end I will talk about how I would set up the reference app if it were going into production.</p>
+</div>
+<div class="section" id="account-creation">
+<h2>Account Creation<a class="headerlink" href="#account-creation" title="Permalink to this headline">¶</a></h2>
+<p>Before you can configure an account you need one first and there are some considerations to think about at account creation.  The most relevant consideration here is if you are setting up a single, stand alone AWS account or if you need to introduce a new AWS Organizational structure or participate in an existing one.   The benefits for a single stand alone account is relative simplicity where the benefits of an AWS Organization are inheritance, user management and tools for making multi-account management easier.   Some questions you might ask yourself in the context of this question are:</p>
+<ul class="simple">
+<li><p>How am I going to manage a development environment vs a production environment?  Do I want to manage them as separate stacks within a single account or are they managed as completely separate AWS accounts?</p></li>
+<li><p>Is there already an AWS Organizational structure and does my application need access to what’s in it?  What is the best way to manage that access?</p></li>
+<li><p>If I end up deciding that multiple accounts make the most sense how will I manage things like billing and governance?</p></li>
+<li><p>What is the best way to manage user access to the account?  If a person leaves the company and we have 10 AWS accounts, what is the best setup for handling this?  If I want to rotate the keys on my service accounts how do I want to manage that, almost certainly not from each sub-account?</p></li>
+<li><p>Policies about things like password rules and such,  do I want my account to inherit them from a root account or do I have to manage them at the account level?</p></li>
+<li><p>Answers to these and other questions will help you decide if you want to manage the account as part of an AWS Organization or if a stand alone account is more appropriate.  For more information on AWS Organizations and account setup the online documentation does a great job giving a more comprehensive picture but this is the stage where you want to think this through.</p></li>
+<li><p><a class="reference external" href="https://aws.amazon.com/organizations/">https://aws.amazon.com/organizations/</a></p></li>
+</ul>
+</div>
+<div class="section" id="account-setup-configuration">
+<h2>Account Setup / Configuration<a class="headerlink" href="#account-setup-configuration" title="Permalink to this headline">¶</a></h2>
+<p>Once you have made the decision on how to create your AWS account now it comes to the point of configuring it.  Here again you have a few things to consider before you can really sit down and do the work of configuring the account.</p>
+</div>
+<div class="section" id="working-in-the-account">
+<h2>Working in the account<a class="headerlink" href="#working-in-the-account" title="Permalink to this headline">¶</a></h2>
+<p>Do I want to go into the account and manually configure it using the AWS management console?  If you end up with a development account and a production account the answer should almost certainly be no but for a small workload maybe.</p>
+<p>Do I want a more automated approach using something like a script that leverages the AWS CLI?  Or better yet do I want to commit to the whole Automation/Infrastructure as Code idea and use a more robust automation solution like Terraform?  Again,  it depends.</p>
+</div>
+<div class="section" id="networking-and-access">
+<h2>Networking and Access<a class="headerlink" href="#networking-and-access" title="Permalink to this headline">¶</a></h2>
+<p>How do I best design the networking and access for the environment to be secure,  scalable and fault tolerant?  As I mentioned above this can be tricky and is a potentially big shift in thinking depending on your background.  Some things to think of in this area are:</p>
+<ul class="simple">
+<li><p>How do I want to secure the network infrastructure?</p></li>
+<li><p>Do I want a private subnet that cannot be accessed from the outside world for secure resources like a database?</p></li>
+<li><p>If I do use a private subnet then how will I get into it from the outside world?  Bastion host in the public subnet or VPN?  How do I secure the bastion host?</p></li>
+<li><p>Will resources in the private subnet need access to the outside world for things like patches and such,  if so how will I provide it?</p></li>
+<li><p>Will I need access to resources in other AWS accounts in the case of an organization with other AWS accounts as discussed above?</p></li>
+<li><p>How do I want to provide fault tolerance for the application?  Does the application need to deploy to multiple regions and availability zones?</p></li>
+<li><p>Is the global distribution of my user base such that I need to consider a CDN to address latency issues that may exist?</p></li>
+</ul>
+</div>
+<div class="section" id="governance-compliance-and-logging">
+<h2>Governance, Compliance and Logging<a class="headerlink" href="#governance-compliance-and-logging" title="Permalink to this headline">¶</a></h2>
+<p>When it comes to understanding what is going on in your account you are going to need to understand and use the monitoring and logging tools for things like.</p>
+<ul class="simple">
+<li><p>Configuration changes</p></li>
+<li><p>Who made the changes and when</p></li>
+<li><p>Performance monitoring</p></li>
+<li><p>Application event logging</p></li>
+</ul>
+<p>CloudTrail, Config and CloudWatch are the services at the core of monitoring your environment and applications running in it.  CloudTrail and Config are less clear than CloudWatch so I’ll talk about them first.</p>
+<p>AWS Config is a service that allows you to see things like an AWS resource inventory.  It also  enables you to see how a resource is configured and how that configuration has changed over time.</p>
+<p>AWS CloudTrail is very similar but it provides log information about the API calls that are making changes to the configurations in your environment.  This will give you information like the API call making the change,  the source IP address of the API call,  when the change was made,  etc…   It will capture events coming from both the AWS Console and the AWS CLI since they both end up using the API.</p>
+<p>For example:  A user changing the configuration of an EC2 instance running in your environment using the AWS CLI from their home machine.  You would see in AWS Config the new configuration state for the instance as well as the original configuration state.  In AWS CloudTrail you would see an API call coming from that user’s IP address that resulted in the config change being made.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://aws.amazon.com/cloudtrail/">https://aws.amazon.com/cloudtrail/</a></p></li>
+<li><p><a class="reference external" href="https://aws.amazon.com/config/">https://aws.amazon.com/config/</a></p></li>
+</ul>
+<p>CloudWatch is different and less of a change management tool and more of an application logging and performance monitoring tool.  This is where you would see application logs and performance metrics about the AWS Services used in your account.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://aws.amazon.com/cloudwatch/">https://aws.amazon.com/cloudwatch/</a></p></li>
+</ul>
+<p>Now that I have discussed some of the broader AWS account setup considerations, what about the reference application setup?   As I mentioned above,  the account setup needs of the reference app are pretty modest outside of the context of a full blown implementation of a business process.   You could take this in one of 2 directions depending on your intentions.  You could setup the account with a minimum set of requirements just for getting the reference application up and running so that you could follow along with the blog or you could setup the account as if you were going to do a production deployment of this.  The setup section will take you through the steps needed to go in either direction.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">The Cloud-Native Runway</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="1.html">#1:  Introduction &amp; Background</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">#2:  Setting up &amp; Configuring the Cloud Environment</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#first-a-mind-switch">First, a mind switch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#account-creation">Account Creation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#account-setup-configuration">Account Setup / Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-in-the-account">Working in the account</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#networking-and-access">Networking and Access</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#governance-compliance-and-logging">Governance, Compliance and Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="3.html">Setup Steps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../help.html">Help</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="1.html" title="previous chapter">#1:  Introduction &amp; Background</a></li>
+      <li>Next: <a href="3.html" title="next chapter">Setup Steps</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Alessandro Braidotti, Steve Fox, Brian Kennedy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/posts/2.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

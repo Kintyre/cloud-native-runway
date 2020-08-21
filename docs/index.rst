@@ -1,13 +1,5 @@
 Welcome to The Cloud-Native Runway!
 ===================================================
-
-Another simple header:
-===================================================
-
-Here is some text explaining some very complicated stuff.::
-
-    print 'hello'
-    >> hello
     
 Contents:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -1,4 +1,4 @@
-Welcome to The Cloud-Native Runway!
+Welcome to Kintyre's Cloud Native Runway Documentation!
 ===================================================
     
 Contents:

@@ -1,92 +1,141 @@
-#2:  Setting up & Configuring the Cloud Environment
-=================================================== 
+=====================================
+Creating & Configuring an AWS Account 
+=====================================
 
-In the first blog post in this series I discussed some of the reasons,  thought processes and design considerations that guided the building of our reference application being discussed in this blog series.  In this post I will be getting into the details of the hosting environment.  Remembering back to the first blog I talked a lot about the design decision for making what we build as cloud provider agnostic as possible.  I also mentioned that most of what we do at the moment is based in the AWS ecosystem so this post will be in that context.  
+Please see our blog post for background information:  `Kintyre Cloud-Native Runway <http://medium.com/kintyre-blog>`_
 
-First, a mind switch
-^^^^^^^^^^^^^^^^^^^^
+Minimum AWS requirements to set up your account to test and deploy your cloud-native application
+================================================================================================
 
-When you start talking about cloud native applications you really start getting into a hybrid skillset.  I say that because if you are from a traditional application development skill set you are used to application architecture.  Things like how to design, databases,  how to define the classes and entities in the application,  how to decouple the application through dependency injection etc…  You are probably not used to dealing with network routes because that's what the “infrastructure” guys do.  On the other hand if you are coming at this from more of a Infrastructure perspective you are used to designing networks,  configuring load balancers,  performing penetration testing,  setting up & configuring servers and such but don't really get the whole dependency injection thing the app guys talk about.   A move to cloud computing goes a long way to blurring the lines between these two worlds into a single skill set.  Sure you can spin up an EC2 instance in AWS and move the existing workload off of the server in the datacenter onto the cloud instance and it will feel very much the same as the on-prem world but that's not really what we are talking about here. 
+**AWS Account with administrative permissions**
 
-When you consider that this can be a big subject requiring a fair amount of architectural skill combined with the actual needs of our reference app being kind of small it would be a short blog post with minimal value if I just described what the app needs.  In order to give cloud setup and configuration its due within the context of a relatively simple use case I decided to break this down into a series of steps with general thought provoking questions one might need to consider as you work through the setup and configuration of a cloud environment. At the end I will talk about how I would set up the reference app if it were going into production.
+This can be achieved with either of the following:
 
-Account Creation
-^^^^^^^^^^^^^^^^
+#. login to the `AWS Management Console <https://aws.amazon.com/console/>`_ with the `account root user <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_root-user.html>`_ an `IAM user with administrative policy association <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users.html>`_.
 
-Before you can configure an account you need one first and there are some considerations to think about at account creation.  The most relevant consideration here is if you are setting up a single, stand alone AWS account or if you need to introduce a new AWS Organizational structure or participate in an existing one.   The benefits for a single stand alone account is relative simplicity where the benefits of an AWS Organization are inheritance, user management and tools for making multi-account management easier.   Some questions you might ask yourself in the context of this question are:
+#. programmatic access to the AWS APIs with an IAM access key or role.  See https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html for more information.
 
-* How am I going to manage a development environment vs a production environment?  Do I want to manage them as separate stacks within a single account or are they managed as completely separate AWS accounts?
+Create an AWS Account
+=====================
 
-* Is there already an AWS Organizational structure and does my application need access to what's in it?  What is the best way to manage that access?
+There are basically two ways to create an AWS Account, either using the sign up process publically on the web, or use an existing an account with AWS Organizations.
 
-* If I end up deciding that multiple accounts make the most sense how will I manage things like billing and governance?  
+What you'll need at mimimum
+---------------------------
+* **Email address** - if this is your first AWS account, any email address that you have will do.  If you will be using this account as part of a team or organization, Kintyre recommends that you setup an email distribution list with multiple members added to the group.
 
-* What is the best way to manage user access to the account?  If a person leaves the company and we have 10 AWS accounts, what is the best setup for handling this?  If I want to rotate the keys on my service accounts how do I want to manage that, almost certainly not from each sub-account?
+* **Account Name/Short Description** - ...
 
-* Policies about things like password rules and such,  do I want my account to inherit them from a root account or do I have to manage them at the account level?
+Using AWS sign up process 
+-------------------------
 
-* Answers to these and other questions will help you decide if you want to manage the account as part of an AWS Organization or if a stand alone account is more appropriate.  For more information on AWS Organizations and account setup the online documentation does a great job giving a more comprehensive picture but this is the stage where you want to think this through.   
+Additional items you will need:
 
-* https://aws.amazon.com/organizations/
+* **Password** - you'll need to choose a strong password;  we'd suggest you store this password in a valut or privlidged access managmeent system
 
-Account Setup / Configuration
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+* **Full Name**, **Company**, **Address**, **Phone** - you'll need to identify yourself with this information, although we are not sure what is actually validated from this list if anything
 
-Once you have made the decision on how to create your AWS account now it comes to the point of configuring it.  Here again you have a few things to consider before you can really sit down and do the work of configuring the account.
+* **Credit Card/Payment** - you will need to 
 
-Working in the account
+https://portal.aws.amazon.com/billing/signup#/start
+
+3 screen shots (forgot to take the 2nd screen with type of acccount, name and contact info)
+
+Using AWS Organizations
+-----------------------
+
+Allows you to avoid billing information and a root password.
+
+2 screen shots so far - create, list with grayed out account status waiting for account to be come available
+
+
+* Login to AWS Account using your credentials
+
+Setup IAM user 
+
+Setup IAM user  - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console
+
+When creating user make sure it has the following attributes
+
+* Programmatic Access
+
+* Access key ID - Store this in your vault for later use
+
+* Secret access key - Store this in your vault for later use
+
+* AdministratorAccess Privileges
+
+Setup AWS CLI
+^^^^^^^^^^^^^
+
+* Download and Install AWS CLI - https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+
+* Configure AWS CLI profile with Serverless Deployment User you just created using Named Profiles - https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html
+
+You should now have everything you need to deploy the reference application into your AWS account.
+
+Recommended AWS account setup requirements and steps
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Requirements:**
+
+* AWS Account with console access
+* 1 Dedicated VPC with 2 subnets
+* 1 Role defining privileges for the deployment user
+* IAM User with programmatic access, assigned to role and access keys
+* CloudTrail and Config enabled
+* AWS Billing setup
+
+**Steps:**
+
+* Create AWS Account & log In
+
+* Create Account - https://aws.amazon.com/account/
+
+* Login to AWS Account using your credentials
+
+Create VPC and Subnets
 ^^^^^^^^^^^^^^^^^^^^^^
 
-Do I want to go into the account and manually configure it using the AWS management console?  If you end up with a development account and a production account the answer should almost certainly be no but for a small workload maybe.
+* Create VPC - https://docs.aws.amazon.com/AmazonECS/latest/developerguide/create-public-private-vpc.html
 
-Do I want a more automated approach using something like a script that leverages the AWS CLI?  Or better yet do I want to commit to the whole Automation/Infrastructure as Code idea and use a more robust automation solution like Terraform?  Again,  it depends.
+Create the Deployment User role
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Networking and Access
-^^^^^^^^^^^^^^^^^^^^^
+* Create Role - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html
 
-How do I best design the networking and access for the environment to be secure,  scalable and fault tolerant?  As I mentioned above this can be tricky and is a potentially big shift in thinking depending on your background.  Some things to think of in this area are:
+* Role must have AdministratorAccess permissions
 
-* How do I want to secure the network infrastructure?
-
-* Do I want a private subnet that cannot be accessed from the outside world for secure resources like a database?
-
-* If I do use a private subnet then how will I get into it from the outside world?  Bastion host in the public subnet or VPN?  How do I secure the bastion host?
-
-* Will resources in the private subnet need access to the outside world for things like patches and such,  if so how will I provide it?
-
-* Will I need access to resources in other AWS accounts in the case of an organization with other AWS accounts as discussed above?
-
-* How do I want to provide fault tolerance for the application?  Does the application need to deploy to multiple regions and availability zones?
-
-* Is the global distribution of my user base such that I need to consider a CDN to address latency issues that may exist?
-
-Governance, Compliance and Logging
+Create IAM user and assign to role
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-When it comes to understanding what is going on in your account you are going to need to understand and use the monitoring and logging tools for things like.
+* Setup IAM user  - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html#id_users_create_console
 
-* Configuration changes
+**When creating user make sure it has the following attributes**
 
-* Who made the changes and when
+* Programmatic Access
+* Access key ID - Store this in your vault for later use
+* Secret access key - Store this in your vault for later use
+* Role Assignment - assign the user ot the role you created above
 
-* Performance monitoring
+Setup CloudTrail
+^^^^^^^^^^^^^^^^
+* CloudTrail - https://aws.amazon.com/cloudtrail/
 
-* Application event logging
+Setup Config
+^^^^^^^^^^^^
 
-CloudTrail, Config and CloudWatch are the services at the core of monitoring your environment and applications running in it.  CloudTrail and Config are less clear than CloudWatch so I'll talk about them first.
+* Config - https://aws.amazon.com/config/
 
-AWS Config is a service that allows you to see things like an AWS resource inventory.  It also  enables you to see how a resource is configured and how that configuration has changed over time.
+Setup Billing
+^^^^^^^^^^^^^
 
-AWS CloudTrail is very similar but it provides log information about the API calls that are making changes to the configurations in your environment.  This will give you information like the API call making the change,  the source IP address of the API call,  when the change was made,  etc…   It will capture events coming from both the AWS Console and the AWS CLI since they both end up using the API.
+* Setup billing bucket - https://docs.aws.amazon.com/cur/latest/userguide/cur-s3.html
 
-For example:  A user changing the configuration of an EC2 instance running in your environment using the AWS CLI from their home machine.  You would see in AWS Config the new configuration state for the instance as well as the original configuration state.  In AWS CloudTrail you would see an API call coming from that user's IP address that resulted in the config change being made.
+Kintyre Also has a GitHub repo that can assist in setting up an AWS account according to account best practices.  
+https://github.com/Kintyre/quail-hollow
 
-* https://aws.amazon.com/cloudtrail/
+**What's Next?**
 
-* https://aws.amazon.com/config/
-
-CloudWatch is different and less of a change management tool and more of an application logging and performance monitoring tool.  This is where you would see application logs and performance metrics about the AWS Services used in your account.
-
-* https://aws.amazon.com/cloudwatch/
-
-Now that I have discussed some of the broader AWS account setup considerations, what about the reference application setup?   As I mentioned above,  the account setup needs of the reference app are pretty modest outside of the context of a full blown implementation of a business process.   You could take this in one of 2 directions depending on your intentions.  You could setup the account with a minimum set of requirements just for getting the reference application up and running so that you could follow along with the blog or you could setup the account as if you were going to do a production deployment of this.  The setup section will take you through the steps needed to go in either direction.
+This blog post has set the stage and put us in the position where we can deploy the reference application into the account but obviously this hasn't been done yet and I will go into the details of that in a later post.  The next post in this series will start getting into the developer setup perspective.
+ 

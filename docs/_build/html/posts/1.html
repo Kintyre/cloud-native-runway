@@ -4,8 +4,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>#1: Introduction &amp; Background &#8212; The Cloud-Native Runway  documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Introduction &amp; Background &#8212; The Cloud-Native Runway  documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -15,8 +15,8 @@
     <script src="../_static/language_data.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="#2: Setting up &amp; Configuring the Cloud Environment" href="2.html" />
-    <link rel="prev" title="Welcome to The Cloud-Native Runway!" href="../index.html" />
+    <link rel="next" title="Creating &amp; Configuring an AWS Account" href="2.html" />
+    <link rel="prev" title="Welcome to Kintyre’s Cloud Native Runway Documentation!" href="../index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -34,32 +34,9 @@
           <div class="body" role="main">
             
   <div class="section" id="introduction-background">
-<h1>#1:  Introduction &amp; Background<a class="headerlink" href="#introduction-background" title="Permalink to this headline">¶</a></h1>
-<p>Kintyre as a technical services delivery firm has real-life experience providing solutions to clients across very diverse business domains, technical stacks, driven by many different needs and budgets.  Said another way we benefit from higher frequency business and technical exposure than many IT shops working in a more traditional setting.  In addition to that we often start projects from scratch and work them through delivery which gives us the benefit of researching new technologies against requirements and working them into our projects on a much higher frequency than would be practical in most other business models other than consulting.  Working this way over time we collectively have built up a pretty good tribal knowledge about what modern application development really looks like in practice,  what works,  what doesn’t and what works but doesn’t feel quite right.  We started asking ourselves how to best condense our collective experience into something more tangible, referenceable, shareable (pick your adjective) so we built a reference app.  In addition to being something of well… a referenced app,  we have a polished foundation/artifact that we can use to get a new client project off the ground very, very quickly with all of the foundational stuff worked out; no bugs, no “how did I do that again”,  it’s there.   This project is also not static,  as we learn new things or begin leveraging new technologies we are diligent to bake it back into the reference app using everything we have learned as a best practice.  This blog series walks through this process attempting to share what we have learned along the way so that you can see the whole picture.</p>
-<div class="section" id="so-what-do-we-have-and-why">
-<h2>So what do we have and why?<a class="headerlink" href="#so-what-do-we-have-and-why" title="Permalink to this headline">¶</a></h2>
-<p>The application itself is a cloud-native application, although I am hearing the term cloud-only more recently as the way to phrase this.  We have tried very hard to make technical choices that make the application as cloud provider agnostic as possible even though most of the application work we do at this point is AWS.</p>
-<p>Some reasons for this are:</p>
-<ul class="simple">
-<li><p>At a CTO level there exists a multitude of concerns that lead to hybrid cloud strategies because of things like security,  long term cloud provider viability,  compliance,  etc…</p></li>
-<li><p>The cloud provider landscape is constantly changing and evolving.</p></li>
-<li><p>Our clients’ cloud provider preferences are ever-changing.</p></li>
-<li><p>Suffice it to say one of the foundational design principals we use for the project is for it to be as cloud provider agnostic as possible but admittedly this is probably impossible to achieve right now.</p></li>
-</ul>
-</div>
-<div class="section" id="technical-stack">
-<h2>Technical Stack<a class="headerlink" href="#technical-stack" title="Permalink to this headline">¶</a></h2>
-<p>Serverless Framework:  We have chosen to use the Serverless Framework for configuration and deployment considerations instead of a more native solution like say CloudFormation.  This decision gives us cloud provider flexibility due to its ability to target the major relevant cloud providers and it is also very well supported and is evolving with the industry.</p>
-<p><strong>CodeShip</strong>:  We have chosen CodeShip as a CICD platform as opposed to a more platform native solution like AWS CodeDeploy because again it decouples us from any given cloud provider and gives us flexibility.  The other reason for the choice is that it is very simple to get a basic pipeline up and running but it has the sophistication to grow as our demands for it does.</p>
-<p><strong>JavaScript/NodeJS</strong>:  Organizationally we use and have experience across many different programming languages but for the purpose of cloud-native development we have centered on JavaScript/NodeJS because it is common across the UI layer and the backend of the application,  is generally well supported across browsers,  cloud providers and has mature tooling and library support.</p>
-<p><strong>Auth0</strong>:  For authentication and user management we have chosen to use Auth0 instead of a more native offering like AWS Cognito.  That choice was motivated by the same portability considerations driving the other component level selections we have made.  Auth0 is a SaaS solution with a nice UI that offers the flexibility to integrate with pretty much anything we come across in terms of needs.</p>
-<p><strong>AWS</strong>:  Although one of the driving architectural goals for the application is to be as cloud provider agnostic as possible,  as I mentioned earlier, most of what we do at this point is centered around the AWS cloud ecosystem.  We see much more demand for custom application development on AWS and see it as best of breed from a cloud provider perspective and as such have chosen it for most of our attention.  Having said that,  that story is one that is constantly evolving and providers like Azure become more and more compelling all of the time,  hence the cloud-agnostic approach to the architecture.</p>
-<p><strong>OpenTrace / SignalFX</strong>:   Later in this blog series, I will be getting into the weeds of the reference application in detail but it is implemented using a microservices API which presents many architectural advantages over past design patterns but figuring out what service depends on what other service and what is breaking along the way in NOT one of those advantages.  In fact this gets quite challenging when microservice applications start getting some size to them.  This aspect of our reference app is very much still maturing but is heading in the direction of OpenTrace and SignalFX for service dependency visualization, general support, and issue traceability.</p>
-</div>
-<div class="section" id="what-s-next">
-<h2>What’s Next?<a class="headerlink" href="#what-s-next" title="Permalink to this headline">¶</a></h2>
-<p>This first blog post in this series is setting up a big picture understanding of what considerations went into creating the reference application in the first place and some of the high-level technical considerations that were made.  In the next post I will be starting to get into the weeds of setting up the hosting environment.</p>
-</div>
+<h1>Introduction &amp; Background<a class="headerlink" href="#introduction-background" title="Permalink to this headline">¶</a></h1>
+<p>The best way to get oriented with Kintyre’s CLoud Native Runway initative is to see this post on Medium:   <a class="reference external" href="https://medium.com/&#64;kintyresf/71afa766d758">https://medium.com/&#64;kintyresf/71afa766d758</a></p>
+<p>This content is put together to describe how to guides on setting up your own project components to build a cloud native application following Kintyre’s recommendations and best practices.</p>
 </div>
 
 
@@ -80,14 +57,8 @@
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">#1:  Introduction &amp; Background</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#so-what-do-we-have-and-why">So what do we have and why?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#technical-stack">Technical Stack</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#what-s-next">What’s Next?</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="2.html">#2:  Setting up &amp; Configuring the Cloud Environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="3.html">Setup Steps</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction &amp; Background</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2.html">Creating &amp; Configuring an AWS Account</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../help.html">Help</a></li>
 </ul>
@@ -96,8 +67,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to The Cloud-Native Runway!</a></li>
-      <li>Next: <a href="2.html" title="next chapter">#2:  Setting up &amp; Configuring the Cloud Environment</a></li>
+      <li>Previous: <a href="../index.html" title="previous chapter">Welcome to Kintyre’s Cloud Native Runway Documentation!</a></li>
+      <li>Next: <a href="2.html" title="next chapter">Creating &amp; Configuring an AWS Account</a></li>
   </ul></li>
 </ul>
 </div>
@@ -127,7 +98,7 @@
       &copy;2020, Alessandro Braidotti, Steve Fox, Brian Kennedy.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

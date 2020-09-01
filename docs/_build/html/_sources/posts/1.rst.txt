@@ -1,6 +1,0 @@
-Introduction & Background
-==============================
-
-The best way to get oriented with Kintyre's CLoud Native Runway initative is to see this post on Medium:   https://medium.com/@kintyresf/71afa766d758
-
-This content is put together to describe how to guides on setting up your own project components to build a cloud native application following Kintyre's recommendations and best practices.
